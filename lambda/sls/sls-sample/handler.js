@@ -2,15 +2,26 @@
 
 const AWS = require("aws-sdk");
 const TABLE_NAME = "newWorld2";
+const S3 = new AWS.S3({apiVersion: "2006-03-01"});
 
 module.exports.hello = async (event, context, callback) => {
     console.log("hello");
     console.log("again");
 
     let dynamodb = getDynamoClient(event);
-    let s3 = getS3Client(event);
-
+    // let s3 = getS3Client(event);
+    
     try {
+    
+        // s3 バケット一覧取得
+        await S3.listBuckets(function(err, data) {
+            if (err) {
+                console.log("Error", err);
+            } else {
+                console.log("Success", data.Buckets);
+            }
+        }).promise();
+
         // scanの実行
         const scanItems = await dynamodb.scan({TableName: TABLE_NAME}).promise();
         
@@ -51,20 +62,4 @@ const getDynamoClient = function (event) {
         });
     }
     return dynamodb;
-};
-
-const getS3Client = function (event) {
-    let s3 = null;
-    if ("isLocal" in event && event.isLocal) {
-        s3 = new AWS.S3({
-            s3ForcePathStyle: true,
-            // endpoint: "http://localhost:8000"
-            endpoint: new AWS.Endpoint("http://localhost:8000"),
-        });
-    } else { 
-        s3 = new AWS.S3({
-            region: "ap-northeast-1"
-        });
-    }
-    return s3;
 };
