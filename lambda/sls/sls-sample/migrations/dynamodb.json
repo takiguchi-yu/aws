@@ -1,0 +1,20 @@
+{
+    "newWorld2": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {"S":"id001"},
+                    "data": {"S":"data001"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "key": {"S":"id002"},
+                    "data": {"S":"data002"}
+                }
+            }
+        }
+    ]
+}
