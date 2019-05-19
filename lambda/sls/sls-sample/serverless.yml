@@ -5,7 +5,7 @@ custom:
   const:
     DYNAMO_DB_TABLE_NAME: newWorld2 
     PROVIDER_ROLE: sls-sample-lambda
-    FUNCTION_EVENTS_S3_BUCKET: work-s3-bucket-upload-dayo2
+    FUNCTION_EVENTS_S3_BUCKET: XXX
   # AWS Local
   dynamodb:
     start:
