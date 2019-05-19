@@ -78,15 +78,6 @@ invoke local .................. Invoke function locally
     --raw .............................. Flag to pass input data as a raw string
 ```
 
-## ローカルで AWS サービスを利用
-plugin を利用すれば各種 AWS サービスが利用可能になる。
-* DynamoDB
-https://serverless.com/plugins/serverless-dynamodb-local/
-* S3
-https://serverless.com/plugins/serverless-s3-local/
-
-<p class="ec__link-index"><a href="#index">[↑ 目次へ]</a></p>
-
 ## serverless.yml
 設定ファイルについては以下を参照。
 https://serverless.com/framework/docs/providers/aws/guide/serverless.yml/
@@ -99,3 +90,96 @@ AWSサービスを作成することが可能。
 ```bash
 $ sls remove -v
 ```
+
+## ローカル開発環境を整える
+### 概要図
+<img width="673" alt="スクリーンショット 2019-05-19 19 15 52" src="https://user-images.githubusercontent.com/8340629/57980777-52748200-7a6a-11e9-9231-0cfc2fe6add1.png">
+
+### 初期設定
+```bash
+$ npm install serverless -g
+$ npm install # package.json をもとに依存関係をインストール
+```
+以下はただのインストールメモ
+```bash
+$ npm install serverless -g
+$ npm install eslint --save-dev
+$ npm install aws-sdk --save
+$ npm install serverless-dynamodb-local --save-dev
+```
+
+### DynamoDB Local
+* DynamoDB
+https://serverless.com/plugins/serverless-dynamodb-local/
+https://qiita.com/noralife/items/e36621ddd0e5b8ff4447
+
+```bash
+# プラグインをインストール
+$ npm install serverless-dynamodb-local --save-dev
+
+# serverless.yml に以下を追記
+plugins:
+  - serverless-dynamodb-local
+```
+
+```bash
+# プラグインを使って DynamoDB Local をインストール
+$ sls dynamodb install
+```
+
+```bash
+# DynamoDB Local 起動
+$ sls dynamodb start
+```
+
+```bash
+# 初期データ投入
+$ aws dynamodb batch-write-item --request-items file://migrations/dynamodb.json --endpoint-url http://localhost:8000
+```
+
+```bash
+# 以下にアクセス
+http://localhost:8000/shell
+
+# 以下を左記に入力し、▷ボタンを押下
+var params = {
+    TableName: 'テーブル名',
+};
+dynamodb.scan(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+});
+```
+
+### S3 Local インストール
+* S3
+https://serverless.com/plugins/serverless-s3-local/
+
+```bash
+# プラグインをインストール
+$ npm install serverless-s3-local --save-dev
+
+# serverless.yml に以下を追記
+plugins:
+  - serverless-s3-local
+```
+
+```bash
+# プラグインを使って DynamoDB Local をインストール
+$ sls plugin install --name serverless-s3-local
+```
+
+```bash
+# DynamoDB Local 起動
+$ sls s3 start
+```
+
+
+### 実行方法
+```bash
+$ sls invoke local -f { function name }
+
+# sample
+sls invoke local -f hello -p testdata/test001.json
+```
+https://serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/

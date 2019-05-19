@@ -1,0 +1,19 @@
+{
+  "name": "sls-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {
+    "aws-sdk": "^2.458.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "serverless-dynamodb-local": "^0.2.37",
+    "serverless-s3-local": "^0.4.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
