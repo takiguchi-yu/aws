@@ -6,21 +6,11 @@ const S3 = new AWS.S3({apiVersion: "2006-03-01"});
 
 module.exports.hello = async (event, context, callback) => {
     console.log("hello");
-    console.log("again");
+    console.log(JSON.stringify(event.Records[0]));
 
     let dynamodb = getDynamoClient(event);
-    // let s3 = getS3Client(event);
     
     try {
-    
-        // s3 バケット一覧取得
-        await S3.listBuckets(function(err, data) {
-            if (err) {
-                console.log("Error", err);
-            } else {
-                console.log("Success", data.Buckets);
-            }
-        }).promise();
 
         // scanの実行
         const scanItems = await dynamodb.scan({TableName: TABLE_NAME}).promise();
@@ -33,6 +23,17 @@ module.exports.hello = async (event, context, callback) => {
             ExpressionAttributeValues: {":ID": "id001"}
         }).promise();
 
+        // s3 バケット一覧取得
+        const s3list = await S3.listBuckets(function(err, data) {
+            if (err) {
+                return err;
+            } else {
+                return data.Buckets;
+            }
+        }).promise();
+
+        console.log(s3list);
+
         // scanとqueryの結果をreturnする
         return {
             statusCode: 200,
@@ -41,6 +42,7 @@ module.exports.hello = async (event, context, callback) => {
                 query: queryItems,
             }, null, 2),
         };
+
     } catch (err) {
         
         // エラー発生時はエラー文をreturnする

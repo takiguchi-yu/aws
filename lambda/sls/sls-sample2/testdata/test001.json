@@ -1,0 +1,30 @@
+{
+    "isLocal": true,
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "ap-northeast-1",
+            "eventTime": "2019-05-20T13:57:33.192Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "AWS:XXXXXXXXXXYYYYYYYYYYZ"
+            },
+            "s3": {
+                "bucket": {
+                    "name": "work-s3-bucket-upload-dayo2",
+                    "ownerIdentity": {
+                        "principalId": "AAAAZZZZZZZZZZ"
+                    },
+                    "arn": "arn:aws:s3:::work-s3-bucket-upload-dayo2"
+                },
+                "object": {
+                    "key": "container.jpg",
+                    "size": 728587,
+                    "eTag": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+                    "sequencer": "000000000000000000"
+                }
+            }
+        }
+    ]
+}
