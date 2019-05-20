@@ -1,32 +1,29 @@
-service: sls-sample
+service: sls-sample2
 
 custom: 
   # Initial setting value.
   const:
     DYNAMO_DB_TABLE_NAME: newWorld2 
-    PROVIDER_ROLE: sls-sample-lambda
-    FUNCTION_EVENTS_S3_BUCKET: work-s3-bucket-upload-dayo2
+    FUNCTION_EVENTS_S3_BUCKET: funcevnet3sbucket
   # AWS Local
   dynamodb:
     start:
       port: 8000
       inMemory: true
       migrate: true
-  s3:
-    host: 0.0.0.0
-    port: 8001
-    directory: ./s3tmp
-    noStart: true
 
 provider:
   name: aws
   runtime: nodejs10.x
   region: ap-northeast-1
-  #role: arn:aws:iam::887277492962:role/${self:custom.const.PROVIDER_ROLE}
+  stage: dev
+  #role: arn:aws:iam::887277492962:role/executeRole
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
         - 'dynamodb:Scan'
+        - 'dynamodb:Query'
+        - 's3:*'
       Resource: '*'
 
 package:
@@ -34,8 +31,8 @@ package:
     - testdata/**
     - node_modules/**
     - migrations/**
-    - .dynamodb/**
     - s3tmp/**
+    - .dynamodb/**
     - .eslintrc.js
 
 functions:
@@ -53,7 +50,7 @@ functions:
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-s3-local
+  
 resources:
   Resources:
     DynamoDBTable:

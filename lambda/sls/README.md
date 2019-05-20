@@ -174,7 +174,6 @@ $ sls plugin install --name serverless-s3-local
 $ sls s3 start
 ```
 
-
 ### 実行方法
 ```bash
 $ sls invoke local -f { function name }
