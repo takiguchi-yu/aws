@@ -1,27 +1,24 @@
 "use strict";
 
 const AWS = require("aws-sdk");
-const TABLE_NAME = "newWorld2";
-const S3 = new AWS.S3({apiVersion: "2006-03-01"});
+const TABLE_NAME = "account_list";
+const S3 = new AWS.S3();
 
 module.exports.hello = async (event, context, callback) => {
-    console.log("hello");
-    console.log(JSON.stringify(event.Records[0]));
+    console.log("---------- hello ----------");
+    // console.log(JSON.stringify(event.Records[0]));
 
     let dynamodb = getDynamoClient(event);
     
     try {
-
-        // scanの実行
-        const scanItems = await dynamodb.scan({TableName: TABLE_NAME}).promise();
-        
-        // queryの実行
-        const queryItems = await dynamodb.query({
-            TableName: TABLE_NAME, 
-            KeyConditionExpression: "#ID = :ID",
-            ExpressionAttributeNames: {"#ID": "key"},
-            ExpressionAttributeValues: {":ID": "id001"}
+        // dynamoDB から 1件取得
+        const item = await dynamodb.get({
+            TableName: TABLE_NAME,
+            Key: {
+                "key": "id001"
+            }
         }).promise();
+        console.log(item);
 
         // s3 バケット一覧取得
         const s3list = await S3.listBuckets(function(err, data) {
@@ -38,8 +35,7 @@ module.exports.hello = async (event, context, callback) => {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                scanItems: scanItems,
-                query: queryItems,
+                getItem: item
             }, null, 2),
         };
 
@@ -52,16 +48,14 @@ module.exports.hello = async (event, context, callback) => {
 };
 
 const getDynamoClient = function (event) {
-    let dynamodb = null;
     if ("isLocal" in event && event.isLocal) {
-        dynamodb = new AWS.DynamoDB.DocumentClient({
+        return new AWS.DynamoDB.DocumentClient({
             region: "localhost",
             endpoint: "http://localhost:8000"
         });
     } else { 
-        dynamodb = new AWS.DynamoDB.DocumentClient({
+        return new AWS.DynamoDB.DocumentClient({
             region: "ap-northeast-1"
         });
     }
-    return dynamodb;
 };
