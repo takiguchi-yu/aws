@@ -1,10 +1,10 @@
-service: sls-sample2
+service: sls-template
 
 custom: 
   # Initial setting value.
   const:
-    DYNAMO_DB_TABLE_NAME: newWorld2 
-    FUNCTION_EVENTS_S3_BUCKET: funcevnet3sbucket
+    DYNAMO_DB_TABLE_NAME: account_list
+    FUNCTION_EVENTS_S3_BUCKET: hoge-bucket-foo-bar
   # AWS Local
   dynamodb:
     start:
