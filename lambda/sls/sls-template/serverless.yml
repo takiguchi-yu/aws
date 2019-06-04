@@ -1,6 +1,6 @@
 service: sls-template
 
-custom: 
+custom:
   # Initial setting value.
   const:
     DYNAMO_DB_TABLE_NAME: account_list
@@ -17,7 +17,6 @@ provider:
   runtime: nodejs10.x
   region: ap-northeast-1
   stage: dev
-  #role: arn:aws:iam::887277492962:role/executeRole
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
@@ -50,7 +49,7 @@ functions:
 
 plugins:
   - serverless-dynamodb-local
-  
+
 resources:
   Resources:
     DynamoDBTable:
