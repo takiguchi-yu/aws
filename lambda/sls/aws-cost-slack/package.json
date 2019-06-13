@@ -1,0 +1,20 @@
+{
+  "name": "aws-cost-slack",
+  "version": "0.0.1",
+  "description": "aws cost",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "https": "^1.0.0",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.469.0"
+  }
+}
