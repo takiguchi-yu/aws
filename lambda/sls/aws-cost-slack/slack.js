@@ -19,12 +19,12 @@ const postSlack = function requestToAPI(data) {
   console.log(`■□■□ Slackへ料金情報を投稿処理 ■□■□`);
   return new Promise(
     (resolve, reject) => { 
-      const s3  = data.serviceBy["Amazon Simple Storage Service"];
-      const cw  = data.serviceBy["AmazonCloudWatch"];
-      const cf  = data.serviceBy["Amazon CloudFront"];
-      const ct  = data.serviceBy["AWS CloudTrail"];
-      const la  = data.serviceBy["AWS Lambda"];
-      const ec2 = data.serviceBy["Amazon Elastic Compute Cloud - Compute"] + data.serviceBy["EC2 - Other"];
+      const s3  = isNaN(data.serviceBy["Amazon Simple Storage Service"]) ? 0 : data.serviceBy["Amazon Simple Storage Service"];
+      const cw  = isNaN(data.serviceBy["AmazonCloudWatch"]) ? 0 : data.serviceBy["AmazonCloudWatch"];
+      const cf  = isNaN(data.serviceBy["Amazon CloudFront"]) ? 0 : data.serviceBy["Amazon CloudFront"];
+      const ct  = isNaN(data.serviceBy["AWS CloudTrail"]) ? 0 : data.serviceBy["AWS CloudTrail"];
+      const la  = isNaN(data.serviceBy["AWS Lambda"]) ? 0 : data.serviceBy["AWS Lambda"];
+      const ec2 = (isNaN(data.serviceBy["Amazon Elastic Compute Cloud - Compute"]) ? 0 : data.serviceBy["Amazon Elastic Compute Cloud - Compute"]) + (isNaN(data.serviceBy["EC2 - Other"]) ? 0 : data.serviceBy["EC2 - Other"]);
       PAYLOAD.text = `今月（${cost.month1}〜${cost.yesterday}）のAWSの使用料は以下の通りです。\n\n`
                     + `\*${process.env.AWS_ACCOUNT_NAME}\* アカウント\n\n`
                     + "```"
@@ -55,7 +55,6 @@ const postSlack = function requestToAPI(data) {
           'Authorization': `Bearer ${process.env.SLACK_API_TOKEN}`, 
         }
       };
-      console.log(options.headers);
 
       /* APIへのリクエスト */
       req = https.request(options, (res) => {
