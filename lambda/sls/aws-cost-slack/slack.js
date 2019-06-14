@@ -1,6 +1,5 @@
 const https = require ('https');
 const url = require('url');
-const _ = require('lodash');  // https://lodash.com/docs/
 const cost = require('./cost.js');
 const ENDPOINT = process.env.SLACK_ENDPOINT_URL;
 const PAYLOAD  = {
@@ -53,9 +52,10 @@ const postSlack = function requestToAPI(data) {
         method : 'POST',
         headers : {
           'Content-Type' : 'application/json',
-          'Authorization': 'Bearer {slackトークン}', 
+          'Authorization': `Bearer ${process.env.SLACK_API_TOKEN}`, 
         }
       };
+      console.log(options.headers);
 
       /* APIへのリクエスト */
       req = https.request(options, (res) => {
