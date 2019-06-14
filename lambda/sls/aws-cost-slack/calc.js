@@ -13,14 +13,16 @@ const costCalc = function costCalc(data) {
     (resolve) => {
       let serviceBy = {};
       let totalCost = 0;
+      /* サービス単位で集計 */
       _.forEach(data.ResultsByTime, function(value, key) {  // 料金部分を抽出
-        _.forEach(value.Groups, function(service, key) {  // AWSサービス単位で料金を抽出して加算
-          let amt = service.Metrics.UnblendedCost.Amount; 
+        _.forEach(value.Groups, function(service, key) {    // AWSサービス単位で料金を抽出して加算
+          let amt = service.Metrics.UnblendedCost.Amount;
           (service.Keys[0] in serviceBy) ? serviceBy[service.Keys[0]] += Number(amt) : serviceBy[service.Keys[0]] = Number(amt);
         });
       });
-      _.forEach(serviceBy, function(value, key) { // 合計金額
-        totalCost += value;
+      /* 合計金額 */
+      _.forEach(serviceBy, function(value, key) {
+        totalCost += Number(value);
       });
       resolve({serviceBy, totalCost});
     }
