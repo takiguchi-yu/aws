@@ -96,6 +96,7 @@ functions:
       SLACK_ENDPOINT_URL: https://slack.com/api/chat.postMessage
       SLACK_CHANNEL: 
       SLACK_USERNAME: AWS Cost Bot
+      SLACK_API_TOKEN: 
 
 # you can add CloudFormation resource templates here
 #resources:
